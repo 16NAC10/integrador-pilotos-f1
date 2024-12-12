@@ -1,0 +1,37 @@
+package ar.edu.undec.adapter.service.piloto.controller;
+
+import ar.edu.undec.adapter.service.piloto.dto.PilotoDto;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import piloto.input.BuscarPilotoInput;
+import piloto.model.Piloto;
+
+import java.util.UUID;
+
+@RestController
+@RequestMapping("pilotos")
+public class BuscarPilotoController {
+
+    private BuscarPilotoInput buscarPilotoInput;
+
+    @Autowired
+    public BuscarPilotoController(BuscarPilotoInput input) {
+        this.buscarPilotoInput = input;
+    }
+
+    @GetMapping(path = "/{id}")
+    public ResponseEntity<?> buscarPiloto(@PathVariable(name = "id") UUID id) {
+        try{
+            Piloto piloto = buscarPilotoInput.buscarPiloto(id);
+            PilotoDto pilotoDto = PilotoDto.factory(piloto.getId(), piloto.getName(), piloto.getSurname(), piloto.getFullName(), piloto.getShortName(), piloto.getPictureUrl());
+            return ResponseEntity.ok(pilotoDto);
+        } catch (Exception e) {
+            return ResponseEntity.noContent().build();
+        }
+    }
+}
+

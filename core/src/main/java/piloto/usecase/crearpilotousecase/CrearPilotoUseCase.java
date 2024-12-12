@@ -20,7 +20,7 @@ public class CrearPilotoUseCase implements CrearPilotoInput {
         if(crearPilotoRepository.buscarPiloto(crearPilotoRequestModel.getId())){
             throw new PilotoExisteException("El piloto " + crearPilotoRequestModel.getName() + " " + crearPilotoRequestModel.getSurname() + " ya existe.");
         }
-        Piloto piloto = Piloto.factory(crearPilotoRequestModel.getId(), crearPilotoRequestModel.getName(), crearPilotoRequestModel.getSurname(), crearPilotoRequestModel.getShortName(), crearPilotoRequestModel.getPictureUrl());
+        Piloto piloto = Piloto.factory(crearPilotoRequestModel.getId(), crearPilotoRequestModel.getName(), crearPilotoRequestModel.getSurname(), crearPilotoRequestModel.getFullName(), crearPilotoRequestModel.getShortName(), crearPilotoRequestModel.getPictureUrl());
         return crearPilotoRepository.crearPiloto(piloto);
     }
 }

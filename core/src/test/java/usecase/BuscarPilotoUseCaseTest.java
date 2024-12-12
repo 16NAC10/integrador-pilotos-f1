@@ -30,7 +30,7 @@ public class BuscarPilotoUseCaseTest {
 
     @Test
     void buscarPiloto_pilotoExiste_returnPiloto() {
-        Piloto piloto = Piloto.factory(id, "Ignacio", "Páez", "PAE", "https://...");
+        Piloto piloto = Piloto.factory(id, "Ignacio", "Páez", "Ignacio Páez", "PAE", "https://...");
         when(buscarPilotoRepository.buscarPiloto(id)).thenReturn(piloto);
         Assertions.assertEquals(piloto, buscarPilotoInput.buscarPiloto(id));
     }

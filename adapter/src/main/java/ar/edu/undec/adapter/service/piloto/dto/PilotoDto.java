@@ -1,18 +1,27 @@
-package piloto.usecase.crearpilotousecase;
+package ar.edu.undec.adapter.service.piloto.dto;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.UUID;
 
-public class CrearPilotoRequestModel {
+public class PilotoDto {
+
+    @JsonProperty("id")
     private UUID id;
+    @JsonProperty("name")
     private String name;
+    @JsonProperty("surname")
     private String surname;
+    @JsonProperty("full_name")
     private String fullName;
+    @JsonProperty("short_name")
     private String shortName;
+    @JsonProperty("picture_url")
     private String pictureUrl;
 
-    public CrearPilotoRequestModel() {}
+    public PilotoDto() {}
 
-    private CrearPilotoRequestModel(UUID id, String name, String surname, String fullName, String shortName, String pictureUrl) {
+    private PilotoDto(UUID id, String name, String surname, String fullName, String shortName, String pictureUrl) {
         this.id = id;
         this.name = name;
         this.surname = surname;
@@ -21,12 +30,8 @@ public class CrearPilotoRequestModel {
         this.pictureUrl = pictureUrl;
     }
 
-    public static CrearPilotoRequestModel factory(UUID id, String name, String surname, String fullName, String shortName, String pictureUrl) {
-        try{
-            return new CrearPilotoRequestModel(id, name, surname, fullName, shortName, pictureUrl);
-        } catch (Exception e) {
-            throw new RuntimeException("Error al crear instancia de CrearPilotoRequestModel");
-        }
+    public static PilotoDto factory(UUID id, String name, String surname, String fullName, String shortName, String pictureUrl) {
+        return new PilotoDto(id, name, surname, fullName, shortName, pictureUrl);
     }
 
     public UUID getId() {

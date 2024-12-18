@@ -1,5 +1,6 @@
 package piloto.usecase.buscarpilotousecase;
 
+import piloto.exception.PilotoExisteException;
 import piloto.exception.PilotoInexistenteException;
 import piloto.input.BuscarPilotoInput;
 import piloto.model.Piloto;
@@ -22,5 +23,14 @@ public class BuscarPilotoUseCase implements BuscarPilotoInput {
             throw new PilotoInexistenteException("El piloto no existe.");
         }
         return piloto;
+    }
+
+    @Override
+    public boolean buscarPiloto(String fullName) {
+        boolean piloto = buscarPilotoRepository.buscarPiloto(fullName);
+        if(piloto) {
+            throw new PilotoExisteException("El piloto ya está registrado.");
+        }
+        return false;
     }
 }

@@ -22,7 +22,13 @@ public class BuscarPilotoRepoImplementation implements BuscarPilotoRepository {
 
     @Override
     public Piloto buscarPiloto(UUID id) {
-        PilotoEntidad pilotoEntidad = buscarPilotoCrud.buscarPorId(id).get();
+        PilotoEntidad pilotoEntidad = buscarPilotoCrud.searchPilotoEntidadById(id).get();
         return PilotoMapper.dataCoreMapper(pilotoEntidad);
+    }
+
+    @Override
+    public boolean buscarPiloto(String nombre) {
+        PilotoEntidad pilotoEntidad = buscarPilotoCrud.searchPilotoEntidadByFullName(nombre).get();
+        return pilotoEntidad != null;
     }
 }

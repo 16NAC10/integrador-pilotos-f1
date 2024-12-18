@@ -6,4 +6,5 @@ import java.util.UUID;
 
 public interface BuscarPilotoRepository {
     Piloto buscarPiloto(UUID id);
+    boolean buscarPiloto(String nombre);
 }

@@ -12,8 +12,6 @@ import org.springframework.http.ResponseEntity;
 import piloto.exception.PilotoExisteException;
 import piloto.input.CrearPilotoInput;
 import piloto.usecase.crearpilotousecase.CrearPilotoRequestModel;
-
-import java.time.LocalDate;
 import java.util.UUID;
 
 import static org.mockito.ArgumentMatchers.any;

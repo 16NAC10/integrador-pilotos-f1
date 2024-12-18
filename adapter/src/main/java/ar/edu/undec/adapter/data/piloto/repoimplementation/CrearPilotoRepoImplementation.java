@@ -24,6 +24,7 @@ public class CrearPilotoRepoImplementation implements CrearPilotoRepository {
     public UUID crearPiloto(Piloto piloto) {
         try{
             PilotoEntidad pilotoEntidad = PilotoMapper.coreDataMapper(piloto);
+
             pilotoEntidad = crearPilotoCrud.save(pilotoEntidad);
             return pilotoEntidad.getId();
         } catch (Exception e) {
@@ -33,6 +34,6 @@ public class CrearPilotoRepoImplementation implements CrearPilotoRepository {
 
     @Override
     public boolean buscarPiloto(UUID id) {
-        return crearPilotoCrud.buscar(id).isPresent();
+        return crearPilotoCrud.searchPilotoEntidadById(id).isPresent();
     }
 }

@@ -9,6 +9,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import piloto.exception.PilotoExisteException;
 import piloto.input.CrearPilotoInput;
 import piloto.model.Piloto;
+import piloto.output.BuscarPilotoRepository;
 import piloto.output.CrearPilotoRepository;
 import piloto.usecase.crearpilotousecase.CrearPilotoRequestModel;
 import piloto.usecase.crearpilotousecase.CrearPilotoUseCase;
@@ -24,6 +25,9 @@ public class CrearPilotoUseCaseTest {
 
     @Mock
     CrearPilotoRepository crearPilotoRepository;
+
+    @Mock
+    BuscarPilotoRepository buscarPilotoRepository;
 
     @BeforeEach
     void setUp() {crearPilotoInput = new CrearPilotoUseCase(crearPilotoRepository);}

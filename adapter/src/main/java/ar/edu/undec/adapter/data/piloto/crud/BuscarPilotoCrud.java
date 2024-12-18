@@ -9,5 +9,6 @@ import java.util.UUID;
 
 @Repository
 public interface BuscarPilotoCrud extends CrudRepository<PilotoEntidad, UUID> {
-    public Optional<PilotoEntidad> buscarPorId(UUID id);
+    public Optional<PilotoEntidad> searchPilotoEntidadById(UUID id);
+    public Optional<PilotoEntidad> searchPilotoEntidadByFullName(String fullName);
 }

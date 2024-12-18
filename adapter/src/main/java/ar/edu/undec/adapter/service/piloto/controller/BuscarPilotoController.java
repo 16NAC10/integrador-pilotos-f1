@@ -24,9 +24,10 @@ public class BuscarPilotoController {
     }
 
     @GetMapping(path = "/{id}")
-    public ResponseEntity<?> buscarPiloto(@PathVariable(name = "id") UUID id) {
+    public ResponseEntity<?> buscarPiloto(@PathVariable(name = "id") String id) {
         try{
-            Piloto piloto = buscarPilotoInput.buscarPiloto(id);
+            UUID uuid = UUID.fromString(id);
+            Piloto piloto = buscarPilotoInput.buscarPiloto(uuid);
             PilotoDto pilotoDto = PilotoDto.factory(piloto.getId(), piloto.getName(), piloto.getSurname(), piloto.getFullName(), piloto.getShortName(), piloto.getPictureUrl());
             return ResponseEntity.ok(pilotoDto);
         } catch (Exception e) {

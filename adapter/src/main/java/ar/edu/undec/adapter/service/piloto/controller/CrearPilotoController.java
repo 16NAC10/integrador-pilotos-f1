@@ -32,7 +32,7 @@ public class CrearPilotoController {
                 return ResponseEntity.badRequest().body(null);
             }
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body("El piloto ya existe");
+            return ResponseEntity.badRequest().body(null);
         }
     }
 }

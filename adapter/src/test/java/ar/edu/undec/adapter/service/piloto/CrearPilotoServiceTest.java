@@ -42,7 +42,7 @@ public class CrearPilotoServiceTest {
         doThrow(PilotoExisteException.class).when(crearPilotoInput).crearPiloto(any(CrearPilotoRequestModel.class));
         ResponseEntity<?> crearPilotoResponse = crearPilotoController.crearPiloto(CrearPilotoRequestModel.factory(id, "Ignacio", "Páez", "Ignacio Páez", "PAE", "https://..."));
         Assertions.assertEquals(HttpStatus.BAD_REQUEST, crearPilotoResponse.getStatusCode());
-        Assertions.assertEquals("El piloto ya existe", crearPilotoResponse.getBody());
+        Assertions.assertNull(crearPilotoResponse.getBody());
     }
 
     @Test

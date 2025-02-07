@@ -19,14 +19,14 @@ public class BuscarPilotoController {
     private BuscarPilotoInput buscarPilotoInput;
 
     @Autowired
-    public BuscarPilotoController(BuscarPilotoInput input) {
-        this.buscarPilotoInput = input;
+    public BuscarPilotoController(BuscarPilotoInput buscarPilotoInput) {
+        this.buscarPilotoInput = buscarPilotoInput;
     }
 
     @GetMapping(path = "/{id}")
-    public ResponseEntity<?> buscarPiloto(@PathVariable(name = "id") String id) {
+    public ResponseEntity<?> buscarPiloto(@PathVariable(name = "id") String stringId) {
         try{
-            UUID uuid = UUID.fromString(id);
+            UUID uuid = UUID.fromString(stringId);
             Piloto piloto = buscarPilotoInput.buscarPiloto(uuid);
             PilotoDto pilotoDto = PilotoDto.factory(piloto.getId(), piloto.getName(), piloto.getSurname(), piloto.getFullName(), piloto.getShortName(), piloto.getPictureUrl());
             return ResponseEntity.ok(pilotoDto);

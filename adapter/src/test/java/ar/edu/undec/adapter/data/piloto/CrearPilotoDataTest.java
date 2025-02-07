@@ -36,7 +36,7 @@ public class CrearPilotoDataTest {
     }
 
     @Test
-    public void crearCurso_cursoNoCreado_returnNull() {
+    public void crearPiloto_pilotoNoCreado_returnNull() {
         Piloto piloto = Piloto.factory(id, "Ignacio", "Páez", "Ignacio Páez", "PAE", "https://...");
         doThrow(RuntimeException.class).when(crearPilotoCrud).save(any(PilotoEntidad.class));
         UUID resultado = crearPilotoRepoImplementation.crearPiloto(piloto);

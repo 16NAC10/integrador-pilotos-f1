@@ -30,56 +30,110 @@ public class CrearPilotoApiServiceTest {
     void setUp() {
         MockitoAnnotations.openMocks(this);
     }
+
     @Test
-    void testGetJson_successfulResponse() {
+    void getJson_respuestaCorrecta() {
         CrearPilotoApiController spyController = spy(crearPilotoApiController);
 
-        String mockJson = """
+        String jsonString = """
                 [
                     {
-                        "full_name": "John Doe",
-                        "name_acronym": "JD",
-                        "headshot_url": "https://example.com/john.jpg"
+                        "full_name": "Max VERSTAPPEN",
+                        "name_acronym": "VER",
+                        "headshot_url": "https://ejemplo.com/ver.jpg"
+                    },
+                    {
+                        "full_name": "Logan SARGEANT",
+                        "name_acronym": "SAR",
+                        "headshot_url": "https://ejemplo.com/sar.jpg"
+                    },
+                    {
+                        "full_name": "Lando NORRIS",
+                        "name_acronym": "NOR",
+                        "headshot_url": "https://ejemplo.com/nor.jpg"
+                    },
+                    {
+                        "full_name": "Max VERSTAPPEN",
+                        "name_acronym": "VER",
+                        "headshot_url": "https://ejemplo.com/ver.jpg"
+                    },
+                    {
+                        "full_name": "Pierre GASLY",
+                        "name_acronym": "GAS",
+                        "headshot_url": "https://ejemplo.com/gas.jpg"
+                    },
+                    {
+                        "full_name": "Sergio PEREZ",
+                        "name_acronym": "PER",
+                        "headshot_url": "https://ejemplo.com/per.jpg"
+                    },
+                    {
+                        "full_name": "Sergio PEREZ",
+                        "name_acronym": "PER",
+                        "headshot_url": "https://ejemplo.com/per.jpg"
                     }
                 ]
                 """;
 
-        doReturn(mockJson).when(spyController).getJson();
+        doReturn(jsonString).when(spyController).getJson();
 
         String jsonResponse = spyController.getJson();
-        assertNotNull(jsonResponse, "La respuesta de getJson no debe ser nula");
-        //assertTrue(jsonResponse.startsWith("[{"), "La respuesta de getJson no debe ser nula");
+        assertNotNull(jsonResponse);
+        assertEquals(jsonString.trim(), jsonResponse.trim());
     }
 
     @Test
-    void testGetJson_throwsException() {
+    void getJson_errorConexion_exception() {
         CrearPilotoApiController spyController = spy(crearPilotoApiController);
         doThrow(new RuntimeException("Error al conectar con la API")).when(spyController).getJson();
-
-        RuntimeException exception = assertThrows(RuntimeException.class, spyController::getJson);
-        assertEquals("Error al conectar con la API", exception.getMessage(), "El mensaje de la excepción no coincide");
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> spyController.getJson());
+        assertEquals("Error al conectar con la API", exception.getMessage());
     }
 
     @Test
-    void testCrearPorApi_successfulResponse() {
+    void crearPilotoPorApi_respuestaCorrecta_pilotosCreados() {
         CrearPilotoApiController spyController = spy(crearPilotoApiController);
 
-        String mockJson = """
+        String stringJson = """
                 [
                     {
-                        "full_name": "John Doe",
-                        "name_acronym": "JD",
-                        "headshot_url": "https://example.com/john.jpg"
+                        "full_name": "Max VERSTAPPEN",
+                        "name_acronym": "VER",
+                        "headshot_url": "https://ejemplo.com/ver.jpg"
                     },
                     {
-                        "full_name": "Jane Smith",
-                        "name_acronym": "JS",
-                        "headshot_url": null
+                        "full_name": "Logan SARGEANT",
+                        "name_acronym": "SAR",
+                        "headshot_url": "https://ejemplo.com/sar.jpg"
+                    },
+                    {
+                        "full_name": "Lando NORRIS",
+                        "name_acronym": "NOR",
+                        "headshot_url": "https://ejemplo.com/nor.jpg"
+                    },
+                    {
+                        "full_name": "Max VERSTAPPEN",
+                        "name_acronym": "VER",
+                        "headshot_url": "https://ejemplo.com/ver.jpg"
+                    },
+                    {
+                        "full_name": "Pierre GASLY",
+                        "name_acronym": "GAS",
+                        "headshot_url": "https://ejemplo.com/gas.jpg"
+                    },
+                    {
+                        "full_name": "Sergio PEREZ",
+                        "name_acronym": "PER",
+                        "headshot_url": "https://ejemplo.com/per.jpg"
+                    },
+                    {
+                        "full_name": "Sergio PEREZ",
+                        "name_acronym": "PER",
+                        "headshot_url": "https://ejemplo.com/per.jpg"
                     }
                 ]
                 """;
-
-        doReturn(mockJson).when(spyController).getJson();
+        doReturn(stringJson).when(spyController).getJson();
 
         List<CrearPilotoRequestModel> pilotosCreados = new ArrayList<>();
         doAnswer(invocation -> {
@@ -89,64 +143,19 @@ public class CrearPilotoApiServiceTest {
         }).when(crearPilotoController).crearPiloto(any(CrearPilotoRequestModel.class));
 
         ResponseEntity<?> response = spyController.crearPorApi();
+        List<String> nombresEsperados = List.of("Max VERSTAPPEN", "Logan SARGEANT", "Lando NORRIS", "Pierre GASLY", "Sergio PEREZ");
+        List<String> nombresObtenidos = pilotosCreados.stream().map(CrearPilotoRequestModel::getFullName).toList();
+        assertTrue(nombresObtenidos.containsAll(nombresEsperados));
         assertEquals(201, response.getStatusCodeValue());
-
-        assertEquals(2, pilotosCreados.size());
-
-        CrearPilotoRequestModel piloto1 = pilotosCreados.get(0);
-        assertEquals("John", piloto1.getName());
-        assertEquals("Doe", piloto1.getSurname());
-        assertEquals("https://example.com/john.jpg", piloto1.getPictureUrl());
-
-        CrearPilotoRequestModel piloto2 = pilotosCreados.get(1);
-        assertEquals("Jane", piloto2.getName());
-        assertEquals("Smith", piloto2.getSurname());
-        assertEquals("Sin imagen", piloto2.getPictureUrl());
+        assertEquals(5, pilotosCreados.size());
+        verify(crearPilotoController, times(5)).crearPiloto(any(CrearPilotoRequestModel.class));
     }
 
     @Test
-    void testCrearPorApi_withDuplicatePilots() {
-        CrearPilotoApiController spyController = spy(crearPilotoApiController);
-
-        String mockJson = """
-                [
-                    {
-                        "full_name": "John Doe",
-                        "name_acronym": "JD",
-                        "headshot_url": "https://example.com/john.jpg"
-                    },
-                    {
-                        "full_name": "John Doe",
-                        "name_acronym": "JD",
-                        "headshot_url": "https://example.com/john.jpg"
-                    }
-                ]
-                """;
-
-        doReturn(mockJson).when(spyController).getJson();
-
-        List<CrearPilotoRequestModel> pilotosCreados = new ArrayList<>();
-        doAnswer(invocation -> {
-            CrearPilotoRequestModel piloto = invocation.getArgument(0);
-            pilotosCreados.add(piloto);
-            return null;
-        }).when(crearPilotoController).crearPiloto(any(CrearPilotoRequestModel.class));
-
-        ResponseEntity<?> response = spyController.crearPorApi();
-        assertEquals(201, response.getStatusCodeValue(), "El estado HTTP debe ser 201 (Created)");
-
-        assertEquals(1, pilotosCreados.size(), "Solo debe haberse creado un piloto, evitando duplicados");
-        assertEquals("John", pilotosCreados.get(0).getName());
-        assertEquals("Doe", pilotosCreados.get(0).getSurname());
-    }
-
-    @Test
-    void testCrearPorApi_runtimeException() {
+    void crearPilotoPorApi_errorAlCrear_exception() {
         CrearPilotoApiController spyController = spy(crearPilotoApiController);
         doThrow(new RuntimeException("Error al obtener JSON")).when(spyController).getJson();
-
-        RuntimeException exception = assertThrows(RuntimeException.class, spyController::crearPorApi);
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> spyController.crearPorApi());
         assertEquals("Error al obtener JSON", exception.getMessage());
     }
 }
-

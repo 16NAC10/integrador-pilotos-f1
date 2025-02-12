@@ -38,8 +38,8 @@ public class CrearPilotoApiController {
 
         for(JsonElement jsonElement : jsonArray){
             String fullName = jsonElement.getAsJsonObject().get("full_name").getAsString();
-            String name = fullName.split(" ")[0];
-            String surname = fullName.split(" ")[1];
+            String name = jsonElement.getAsJsonObject().get("first_name").isJsonNull() ? fullName.split(" ")[0] : jsonElement.getAsJsonObject().get("first_name").getAsString();//
+            String surname = jsonElement.getAsJsonObject().get("last_name").isJsonNull() ? fullName.split(" ")[1] : jsonElement.getAsJsonObject().get("last_name").getAsString();//
             String shortName = jsonElement.getAsJsonObject().get("name_acronym").getAsString();
             String pictureUrl = jsonElement.getAsJsonObject().get("headshot_url").isJsonNull() ? "Sin imagen" : jsonElement.getAsJsonObject().get("headshot_url").getAsString();
             CrearPilotoRequestModel piloto = CrearPilotoRequestModel.factory(null, name, surname, fullName, shortName, pictureUrl);

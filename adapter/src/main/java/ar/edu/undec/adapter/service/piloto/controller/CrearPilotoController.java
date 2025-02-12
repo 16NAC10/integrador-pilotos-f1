@@ -15,7 +15,7 @@ import java.util.UUID;
 @RequestMapping("pilotos")
 public class CrearPilotoController {
 
-    private CrearPilotoInput crearPilotoInput;
+    CrearPilotoInput crearPilotoInput;
 
     @Autowired
     public CrearPilotoController(CrearPilotoInput crearPilotoInput) {

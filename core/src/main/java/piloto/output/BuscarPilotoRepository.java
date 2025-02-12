@@ -1,10 +1,8 @@
 package piloto.output;
-
 import piloto.model.Piloto;
-
 import java.util.UUID;
 
-public interface CrearPilotoRepository {
-    UUID crearPiloto(Piloto piloto);
+public interface BuscarPilotoRepository {
+    Piloto buscarPiloto(UUID id);
     boolean buscarPiloto(String nombre);
 }

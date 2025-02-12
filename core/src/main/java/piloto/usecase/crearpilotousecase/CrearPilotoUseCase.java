@@ -17,7 +17,7 @@ public class CrearPilotoUseCase implements CrearPilotoInput {
 
     @Override
     public UUID crearPiloto(CrearPilotoRequestModel crearPilotoRequestModel) throws PilotoExisteException {
-        if(crearPilotoRepository.buscarPiloto(crearPilotoRequestModel.getId())){
+        if(crearPilotoRepository.buscarPiloto(crearPilotoRequestModel.getFullName())){
             throw new PilotoExisteException("El piloto ya existe.");
         }
         Piloto piloto = Piloto.factory(crearPilotoRequestModel.getId(), crearPilotoRequestModel.getName(), crearPilotoRequestModel.getSurname(), crearPilotoRequestModel.getFullName(), crearPilotoRequestModel.getShortName(), crearPilotoRequestModel.getPictureUrl());

@@ -8,14 +8,19 @@ public class PilotoDto {
 
     @JsonProperty("id")
     private UUID id;
+
     @JsonProperty("name")
     private String name;
+
     @JsonProperty("surname")
     private String surname;
+
     @JsonProperty("full_name")
     private String fullName;
+
     @JsonProperty("short_name")
     private String shortName;
+
     @JsonProperty("picture_url")
     private String pictureUrl;
 

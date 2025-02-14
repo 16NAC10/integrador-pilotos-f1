@@ -33,9 +33,6 @@ public class CrearPilotoApiController {
         String json = getJson();
         JsonParser parser = new JsonParser();
         JsonArray jsonArray = parser.parse(json).getAsJsonArray();
-        ArrayList<CrearPilotoRequestModel> arrayPilotos = new ArrayList<>();
-        boolean repetido = false;
-
         for(JsonElement jsonElement : jsonArray){
             String fullName = jsonElement.getAsJsonObject().get("full_name").getAsString();
             String name = jsonElement.getAsJsonObject().get("first_name").isJsonNull() ? fullName.split(" ")[0] : jsonElement.getAsJsonObject().get("first_name").getAsString();//
@@ -43,16 +40,7 @@ public class CrearPilotoApiController {
             String shortName = jsonElement.getAsJsonObject().get("name_acronym").getAsString();
             String pictureUrl = jsonElement.getAsJsonObject().get("headshot_url").isJsonNull() ? "Sin imagen" : jsonElement.getAsJsonObject().get("headshot_url").getAsString();
             CrearPilotoRequestModel piloto = CrearPilotoRequestModel.factory(null, name, surname, fullName, shortName, pictureUrl);
-            for(CrearPilotoRequestModel p : arrayPilotos){
-                if(Objects.equals(piloto.getFullName(), p.getFullName())){
-                    repetido = true;
-                }
-            }
-            if(!repetido){
-                arrayPilotos.add(piloto);
-                crearPilotoController.crearPiloto(piloto);
-            }
-            repetido = false;
+            crearPilotoController.crearPiloto(piloto);
         }
         return ResponseEntity.created(null).build();
     }

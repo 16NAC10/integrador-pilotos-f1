@@ -3,6 +3,7 @@ import piloto.model.Piloto;
 import java.util.UUID;
 
 public interface BuscarPilotoRepository {
-    Piloto buscarPiloto(UUID id);
-    boolean buscarPiloto(String nombre);
+    Piloto buscarPilotoPorId(UUID id);
+    Piloto buscarPilotoPorNombreCompleto(String nombre);
+    Piloto buscarPilotoPorAbreviatura(String abreviatura);
 }

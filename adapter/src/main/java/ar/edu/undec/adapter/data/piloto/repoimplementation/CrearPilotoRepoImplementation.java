@@ -34,6 +34,11 @@ public class CrearPilotoRepoImplementation implements CrearPilotoRepository {
 
     @Override
     public boolean buscarPiloto(String nombre) {
-        return crearPilotoCrud.searchPilotoEntidadById(nombre).isPresent();
+        return crearPilotoCrud.existsByFullName(nombre);
+    }
+
+    @Override
+    public boolean buscarPilotoPorAbreviatura(String abreviatura) {
+        return crearPilotoCrud.existsByShortName(abreviatura);
     }
 }

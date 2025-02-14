@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import piloto.exception.PilotoExisteException;
 import piloto.exception.PilotoInexistenteException;
 import piloto.input.BuscarPilotoInput;
 import piloto.model.Piloto;
@@ -30,13 +29,13 @@ public class BuscarPilotoUseCaseTest {
     @Test
     void buscarPiloto_pilotoExiste_returnPiloto() {
         Piloto piloto = Piloto.factory(id, "Ignacio", "Páez", "Ignacio Páez", "PAE", "https://...");
-        when(buscarPilotoRepository.buscarPiloto(id)).thenReturn(piloto);
-        Assertions.assertEquals(piloto, buscarPilotoInput.buscarPiloto(id));
+        when(buscarPilotoRepository.buscarPilotoPorId(id)).thenReturn(piloto);
+        Assertions.assertEquals(piloto, buscarPilotoInput.buscarPilotoPorId(id));
     }
 
     @Test
     void buscarPilotoPorId_pilotoNoExiste_Exception() {
-        when(buscarPilotoRepository.buscarPiloto(id)).thenThrow(PilotoInexistenteException.class);
-        Assertions.assertThrows(PilotoInexistenteException.class, () -> buscarPilotoInput.buscarPiloto(id));
+        when(buscarPilotoRepository.buscarPilotoPorId(id)).thenThrow(PilotoInexistenteException.class);
+        Assertions.assertThrows(PilotoInexistenteException.class, () -> buscarPilotoInput.buscarPilotoPorId(id));
     }
 }

@@ -22,11 +22,33 @@ public class BuscarPilotoController {
         this.buscarPilotoInput = buscarPilotoInput;
     }
 
-    @GetMapping(path = "/{id}")
-    public ResponseEntity<?> buscarPiloto(@PathVariable(name = "id") String stringId) {
+    @GetMapping(path = "/id={id}")
+    public ResponseEntity<?> buscarPilotoPorId(@PathVariable(name = "id") String stringId) {
         try{
             UUID uuid = UUID.fromString(stringId);
-            Piloto piloto = buscarPilotoInput.buscarPiloto(uuid);
+            Piloto piloto = buscarPilotoInput.buscarPilotoPorId(uuid);
+            PilotoDto pilotoDto = PilotoDto.factory(piloto.getId(), piloto.getName(), piloto.getSurname(), piloto.getFullName(), piloto.getShortName(), piloto.getPictureUrl());
+            return ResponseEntity.ok(pilotoDto);
+        } catch (Exception e) {
+            return ResponseEntity.noContent().build();
+        }
+    }
+
+    @GetMapping(path = "/full_name={full_name}")
+    public ResponseEntity<?> buscarPilotoPorNombreCompleto(@PathVariable(name = "full_name") String full_name) {
+        try{
+            Piloto piloto = buscarPilotoInput.buscarPilotoPorNombreCompleto(full_name);
+            PilotoDto pilotoDto = PilotoDto.factory(piloto.getId(), piloto.getName(), piloto.getSurname(), piloto.getFullName(), piloto.getShortName(), piloto.getPictureUrl());
+            return ResponseEntity.ok(pilotoDto);
+        } catch (Exception e) {
+            return ResponseEntity.noContent().build();
+        }
+    }
+
+    @GetMapping(path = "/short_name={short_name}")
+    public ResponseEntity<?> buscarPilotoPorAbreviatura(@PathVariable(name = "short_name") String short_name) {
+        try{
+            Piloto piloto = buscarPilotoInput.buscarPilotoPorAbreviatura(short_name);
             PilotoDto pilotoDto = PilotoDto.factory(piloto.getId(), piloto.getName(), piloto.getSurname(), piloto.getFullName(), piloto.getShortName(), piloto.getPictureUrl());
             return ResponseEntity.ok(pilotoDto);
         } catch (Exception e) {

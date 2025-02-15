@@ -32,43 +32,43 @@ public class CrearPilotoApiServiceTest {
     }
 
     @Test
-    void getJson_respuestaCorrecta() {
+    void getJson_respuestaCorrecta_returnString() {
         CrearPilotoApiController spyController = spy(crearPilotoApiController);
 
         String jsonString = """
                 [
                     {
                         "full_name": "Max VERSTAPPEN",
+                        "first_name": "Max",
+                        "last_name": "Verstappen",
                         "name_acronym": "VER",
                         "headshot_url": "https://ejemplo.com/ver.jpg"
                     },
                     {
                         "full_name": "Logan SARGEANT",
+                        "first_name": "Logan",
+                        "last_name": "Sargeant",
                         "name_acronym": "SAR",
                         "headshot_url": "https://ejemplo.com/sar.jpg"
                     },
                     {
                         "full_name": "Lando NORRIS",
+                        "first_name": "Lando",
+                        "last_name": "Norris",
                         "name_acronym": "NOR",
                         "headshot_url": "https://ejemplo.com/nor.jpg"
                     },
                     {
-                        "full_name": "Max VERSTAPPEN",
-                        "name_acronym": "VER",
-                        "headshot_url": "https://ejemplo.com/ver.jpg"
-                    },
-                    {
                         "full_name": "Pierre GASLY",
+                        "first_name": "Pierre",
+                        "last_name": "Gasly",
                         "name_acronym": "GAS",
                         "headshot_url": "https://ejemplo.com/gas.jpg"
                     },
                     {
                         "full_name": "Sergio PEREZ",
-                        "name_acronym": "PER",
-                        "headshot_url": "https://ejemplo.com/per.jpg"
-                    },
-                    {
-                        "full_name": "Sergio PEREZ",
+                        "first_name": "Sergio",
+                        "last_name": "Perez",
                         "name_acronym": "PER",
                         "headshot_url": "https://ejemplo.com/per.jpg"
                     }
@@ -76,7 +76,6 @@ public class CrearPilotoApiServiceTest {
                 """;
 
         doReturn(jsonString).when(spyController).getJson();
-
         String jsonResponse = spyController.getJson();
         assertNotNull(jsonResponse);
         assertEquals(jsonString.trim(), jsonResponse.trim());
@@ -118,25 +117,11 @@ public class CrearPilotoApiServiceTest {
                         "headshot_url": "https://ejemplo.com/nor.jpg"
                     },
                     {
-                        "full_name": "Max VERSTAPPEN",
-                        "first_name": "Max",
-                        "last_name": "Verstappen",
-                        "name_acronym": "VER",
-                        "headshot_url": "https://ejemplo.com/ver.jpg"
-                    },
-                    {
                         "full_name": "Pierre GASLY",
                         "first_name": "Pierre",
                         "last_name": "Gasly",
                         "name_acronym": "GAS",
                         "headshot_url": "https://ejemplo.com/gas.jpg"
-                    },
-                    {
-                        "full_name": "Sergio PEREZ",
-                        "first_name": "Sergio",
-                        "last_name": "Perez",
-                        "name_acronym": "PER",
-                        "headshot_url": "https://ejemplo.com/per.jpg"
                     },
                     {
                         "full_name": "Sergio PEREZ",

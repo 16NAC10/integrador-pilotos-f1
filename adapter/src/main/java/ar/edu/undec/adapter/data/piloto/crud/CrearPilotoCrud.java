@@ -7,6 +7,6 @@ import java.util.UUID;
 
 @Repository
 public interface CrearPilotoCrud extends CrudRepository<PilotoEntidad, UUID> {
-    public Boolean existsByFullName(String full_name);
-    public Boolean existsByShortName(String short_name);
+    Boolean existsByFullName(String full_name);
+    Boolean existsByShortName(String short_name);
 }

@@ -6,6 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import piloto.model.Piloto;
 import piloto.output.BuscarPilotoRepository;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -20,19 +23,42 @@ public class BuscarPilotoRepoImplementation implements BuscarPilotoRepository {
 
     @Override
     public Piloto buscarPilotoPorId(UUID id) {
-        PilotoEntidad pilotoEntidad = buscarPilotoCrud.searchPilotoEntidadById(id).get();
-        return PilotoMapper.dataCoreMapper(pilotoEntidad);
+        PilotoEntidad pilotoEntidad = buscarPilotoCrud.searchPilotoEntidadById(id).orElse(null);
+        if (pilotoEntidad == null) {
+            return null;
+        }else {
+            return PilotoMapper.dataCoreMapper(pilotoEntidad);
+        }
     }
 
     @Override
     public Piloto buscarPilotoPorNombreCompleto(String fullName) {
-        PilotoEntidad pilotoEntidad = buscarPilotoCrud.searchPilotoEntidadByFullName(fullName).get();
-        return PilotoMapper.dataCoreMapper(pilotoEntidad);
+        PilotoEntidad pilotoEntidad = buscarPilotoCrud.searchPilotoEntidadByFullName(fullName).orElse(null);
+        if (pilotoEntidad == null) {
+            return null;
+        }else {
+            return PilotoMapper.dataCoreMapper(pilotoEntidad);
+        }
     }
 
     @Override
     public Piloto buscarPilotoPorAbreviatura(String abreviatura) {
-        PilotoEntidad pilotoEntidad = buscarPilotoCrud.searchPilotoEntidadByShortName(abreviatura).get();
-        return PilotoMapper.dataCoreMapper(pilotoEntidad);
+        PilotoEntidad pilotoEntidad = buscarPilotoCrud.searchPilotoEntidadByShortName(abreviatura).orElse(null);
+        if (pilotoEntidad == null) {
+            return null;
+        }else {
+            return PilotoMapper.dataCoreMapper(pilotoEntidad);
+        }
+    }
+
+    @Override
+    public List<Piloto> buscarTodosLosPilotos() {
+        List<PilotoEntidad> pilotosData = buscarPilotoCrud.findAll();
+        List<Piloto> pilotosCore = new ArrayList<>();
+        for(PilotoEntidad pilotoEntidad : pilotosData){
+            Piloto piloto = PilotoMapper.dataCoreMapper(pilotoEntidad);
+            pilotosCore.add(piloto);
+        }
+        return pilotosCore;
     }
 }

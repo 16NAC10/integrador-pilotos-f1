@@ -1,5 +1,6 @@
 package ar.edu.undec.adapter.service.piloto.controller;
 
+import ar.edu.undec.adapter.service.piloto.dto.PilotoDto;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
@@ -40,7 +41,7 @@ public class CrearPilotoApiController {
             String surname = jsonElement.getAsJsonObject().get("last_name").isJsonNull() ? fullName.split(" ")[1] : jsonElement.getAsJsonObject().get("last_name").getAsString();
             String shortName = jsonElement.getAsJsonObject().get("name_acronym").getAsString();
             String pictureUrl = jsonElement.getAsJsonObject().get("headshot_url").isJsonNull() ? "Sin imagen" : jsonElement.getAsJsonObject().get("headshot_url").getAsString();
-            CrearPilotoRequestModel piloto = CrearPilotoRequestModel.factory(null, name, surname, fullName, shortName, pictureUrl);
+            PilotoDto piloto = PilotoDto.factory(null, name, surname, fullName, shortName, pictureUrl);
             crearPilotoController.crearPiloto(piloto);
         }
         return ResponseEntity.created(null).build();

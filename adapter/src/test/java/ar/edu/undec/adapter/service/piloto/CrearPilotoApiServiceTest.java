@@ -2,13 +2,14 @@ package ar.edu.undec.adapter.service.piloto;
 
 import ar.edu.undec.adapter.service.piloto.controller.CrearPilotoApiController;
 import ar.edu.undec.adapter.service.piloto.controller.CrearPilotoController;
+import ar.edu.undec.adapter.service.piloto.dto.PilotoDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.ResponseEntity;
-import piloto.usecase.crearpilotousecase.CrearPilotoRequestModel;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -90,41 +91,20 @@ public class CrearPilotoApiServiceTest {
     }
 
     @Test
-    void crearPilotoPorApi_respuestaCorrecta_pilotosCreados() {
+    void crearPorApi_pilotosCreadosCorrectamente() {
         CrearPilotoApiController spyController = spy(crearPilotoApiController);
 
-        String stringJson = """
+        String jsonString = """
                 [
                     {
-                        "full_name": "Max VERSTAPPEN",
+                        "full_name": "MAX VERSTAPPEN",
                         "first_name": "Max",
                         "last_name": "Verstappen",
                         "name_acronym": "VER",
                         "headshot_url": "https://ejemplo.com/ver.jpg"
                     },
                     {
-                        "full_name": "Logan SARGEANT",
-                        "first_name": "Logan",
-                        "last_name": "Sargeant",
-                        "name_acronym": "SAR",
-                        "headshot_url": "https://ejemplo.com/sar.jpg"
-                    },
-                    {
-                        "full_name": "Lando NORRIS",
-                        "first_name": "Lando",
-                        "last_name": "Norris",
-                        "name_acronym": "NOR",
-                        "headshot_url": "https://ejemplo.com/nor.jpg"
-                    },
-                    {
-                        "full_name": "Pierre GASLY",
-                        "first_name": "Pierre",
-                        "last_name": "Gasly",
-                        "name_acronym": "GAS",
-                        "headshot_url": "https://ejemplo.com/gas.jpg"
-                    },
-                    {
-                        "full_name": "Sergio PEREZ",
+                        "full_name": "SERGIO PEREZ",
                         "first_name": "Sergio",
                         "last_name": "Perez",
                         "name_acronym": "PER",
@@ -132,24 +112,28 @@ public class CrearPilotoApiServiceTest {
                     }
                 ]
                 """;
-        doReturn(stringJson).when(spyController).getJson();
 
-        List<CrearPilotoRequestModel> pilotosCreados = new ArrayList<>();
+        doReturn(jsonString).when(spyController).getJson();
+        List<PilotoDto> pilotosCreados = new ArrayList<>();
         doAnswer(invocation -> {
-            CrearPilotoRequestModel piloto = invocation.getArgument(0);
+            PilotoDto piloto = invocation.getArgument(0);
             pilotosCreados.add(piloto);
             return null;
-        }).when(crearPilotoController).crearPiloto(any(CrearPilotoRequestModel.class));
-
+        }).when(crearPilotoController).crearPiloto(any(PilotoDto.class));
         ResponseEntity<?> response = spyController.crearPorApi();
-        List<String> nombresEsperados = List.of("Max VERSTAPPEN", "Logan SARGEANT", "Lando NORRIS", "Pierre GASLY", "Sergio PEREZ");
-        List<String> nombresObtenidos = pilotosCreados.stream().map(CrearPilotoRequestModel::getFullName).toList();
-        assertTrue(nombresObtenidos.containsAll(nombresEsperados));
-        assertEquals(201, response.getStatusCodeValue());
-        assertEquals(5, pilotosCreados.size());
-        verify(crearPilotoController, times(5)).crearPiloto(any(CrearPilotoRequestModel.class));
-    }
 
+        assertEquals(201, response.getStatusCodeValue());
+        assertEquals(2, pilotosCreados.size());
+        assertEquals("Max", pilotosCreados.get(0).getName());
+        assertEquals("Verstappen", pilotosCreados.get(0).getSurname());
+        assertEquals("VER", pilotosCreados.get(0).getShortName());
+        assertEquals("https://ejemplo.com/ver.jpg", pilotosCreados.get(0).getPictureUrl());
+        assertEquals("Sergio", pilotosCreados.get(1).getName());
+        assertEquals("Perez", pilotosCreados.get(1).getSurname());
+        assertEquals("PER", pilotosCreados.get(1).getShortName());
+        assertEquals("https://ejemplo.com/per.jpg", pilotosCreados.get(1).getPictureUrl());
+        verify(crearPilotoController, times(2)).crearPiloto(any(PilotoDto.class));
+    }
     @Test
     void crearPilotoPorApi_errorAlCrear_exception() {
         CrearPilotoApiController spyController = spy(crearPilotoApiController);

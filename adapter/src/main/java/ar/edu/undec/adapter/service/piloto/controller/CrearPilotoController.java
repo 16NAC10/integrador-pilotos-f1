@@ -1,6 +1,7 @@
 package ar.edu.undec.adapter.service.piloto.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,12 +28,12 @@ public class CrearPilotoController {
         try {
             UUID id = crearPilotoInput.crearPiloto(crearPilotoRequestModel);
             if (id != null) {
-                return ResponseEntity.created(null).body(id);
+                return ResponseEntity.created(null).body("El piloto se ha guardado correctamente");
             } else {
                 return ResponseEntity.badRequest().body(null);
             }
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(null);
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
         }
     }
 }

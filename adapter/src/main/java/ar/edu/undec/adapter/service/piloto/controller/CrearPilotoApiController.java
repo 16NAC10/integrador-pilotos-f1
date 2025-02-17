@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import piloto.usecase.crearpilotousecase.CrearPilotoRequestModel;
+import utils.NombreParser;
 
 import javax.net.ssl.HttpsURLConnection;
 import java.io.BufferedReader;
@@ -34,9 +35,9 @@ public class CrearPilotoApiController {
         JsonArray jsonArray = parser.parse(json).getAsJsonArray();
         for(JsonElement jsonElement : jsonArray){
             String fullName = jsonElement.getAsJsonObject().get("full_name").getAsString();
+            fullName = NombreParser.parse(fullName);
             String name = jsonElement.getAsJsonObject().get("first_name").isJsonNull() ? fullName.split(" ")[0] : jsonElement.getAsJsonObject().get("first_name").getAsString();
             String surname = jsonElement.getAsJsonObject().get("last_name").isJsonNull() ? fullName.split(" ")[1] : jsonElement.getAsJsonObject().get("last_name").getAsString();
-            surname = surname.substring(0, 1).toUpperCase() + surname.substring(1).toLowerCase();
             String shortName = jsonElement.getAsJsonObject().get("name_acronym").getAsString();
             String pictureUrl = jsonElement.getAsJsonObject().get("headshot_url").isJsonNull() ? "Sin imagen" : jsonElement.getAsJsonObject().get("headshot_url").getAsString();
             CrearPilotoRequestModel piloto = CrearPilotoRequestModel.factory(null, name, surname, fullName, shortName, pictureUrl);

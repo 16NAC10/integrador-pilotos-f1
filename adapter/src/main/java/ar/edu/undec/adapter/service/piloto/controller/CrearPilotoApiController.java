@@ -9,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import piloto.usecase.crearpilotousecase.CrearPilotoRequestModel;
 import utils.NombreParser;
 
 import javax.net.ssl.HttpsURLConnection;

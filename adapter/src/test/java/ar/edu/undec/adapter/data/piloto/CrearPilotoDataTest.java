@@ -42,4 +42,36 @@ public class CrearPilotoDataTest {
         UUID resultado = crearPilotoRepoImplementation.crearPiloto(piloto);
         Assertions.assertNull(resultado);
     }
+
+    @Test
+    void buscarPiloto_pilotoEncontrado_returnTrue() {
+        String nombre = "Ignacio Páez";
+        when(crearPilotoCrud.existsByFullName(nombre)).thenReturn(true);
+        boolean resultado = crearPilotoRepoImplementation.buscarPiloto(nombre);
+        Assertions.assertTrue(resultado);
+    }
+
+    @Test
+    void buscarPiloto_pilotoNoEncontrado_returnFalse() {
+        String nombre = "Ignacio Páez";
+        when(crearPilotoCrud.existsByFullName(nombre)).thenReturn(false);
+        boolean resultado = crearPilotoRepoImplementation.buscarPiloto(nombre);
+        Assertions.assertFalse(resultado);
+    }
+
+    @Test
+    void buscarPilotoPorAbreviatura_pilotoEncontrado_returnTrue() {
+        String abreviatura = "PAE";
+        when(crearPilotoCrud.existsByShortName(abreviatura)).thenReturn(true);
+        boolean resultado = crearPilotoRepoImplementation.buscarPilotoPorAbreviatura(abreviatura);
+        Assertions.assertTrue(resultado);
+    }
+
+    @Test
+    void buscarPilotoPorAbreviatura_debeRetornarFalseSiNoExiste() {
+        String abreviatura = "PAE";
+        when(crearPilotoCrud.existsByShortName(abreviatura)).thenReturn(false);
+        boolean resultado = crearPilotoRepoImplementation.buscarPilotoPorAbreviatura(abreviatura);
+        Assertions.assertFalse(resultado);
+    }
 }

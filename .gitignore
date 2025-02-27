@@ -28,7 +28,6 @@ replay_pid*
 *.iws
 *.iml
 *.ipr
-*.properties
 
 /adapter/target/
 /core/target/

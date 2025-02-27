@@ -3,22 +3,21 @@ package ar.edu.undec.adapter.service.piloto;
 import ar.edu.undec.adapter.service.piloto.controller.CrearPilotoApiController;
 import ar.edu.undec.adapter.service.piloto.controller.CrearPilotoController;
 import ar.edu.undec.adapter.service.piloto.dto.PilotoDto;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.ResponseEntity;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-
+@ExtendWith(MockitoExtension.class)
 public class CrearPilotoApiServiceTest {
 
     @Mock
@@ -26,11 +25,6 @@ public class CrearPilotoApiServiceTest {
 
     @InjectMocks
     private CrearPilotoApiController crearPilotoApiController;
-
-    @BeforeEach
-    void setUp() {
-        MockitoAnnotations.openMocks(this);
-    }
 
     @Test
     void getJson_respuestaCorrecta_returnString() {
@@ -78,8 +72,8 @@ public class CrearPilotoApiServiceTest {
 
         doReturn(jsonString).when(spyController).getJson();
         String jsonResponse = spyController.getJson();
-        assertNotNull(jsonResponse);
-        assertEquals(jsonString.trim(), jsonResponse.trim());
+        Assertions.assertNotNull(jsonResponse);
+        Assertions.assertEquals(jsonString.trim(), jsonResponse.trim());
     }
 
     @Test
@@ -87,7 +81,7 @@ public class CrearPilotoApiServiceTest {
         CrearPilotoApiController spyController = spy(crearPilotoApiController);
         doThrow(new RuntimeException("Error al conectar con la API")).when(spyController).getJson();
         RuntimeException exception = assertThrows(RuntimeException.class, () -> spyController.getJson());
-        assertEquals("Error al conectar con la API", exception.getMessage());
+        Assertions.assertEquals("Error al conectar con la API", exception.getMessage());
     }
 
     @Test
@@ -122,23 +116,24 @@ public class CrearPilotoApiServiceTest {
         }).when(crearPilotoController).crearPiloto(any(PilotoDto.class));
         ResponseEntity<?> response = spyController.crearPorApi();
 
-        assertEquals(201, response.getStatusCodeValue());
-        assertEquals(2, pilotosCreados.size());
-        assertEquals("Max", pilotosCreados.get(0).getName());
-        assertEquals("Verstappen", pilotosCreados.get(0).getSurname());
-        assertEquals("VER", pilotosCreados.get(0).getShortName());
-        assertEquals("https://ejemplo.com/ver.jpg", pilotosCreados.get(0).getPictureUrl());
-        assertEquals("Sergio", pilotosCreados.get(1).getName());
-        assertEquals("Perez", pilotosCreados.get(1).getSurname());
-        assertEquals("PER", pilotosCreados.get(1).getShortName());
-        assertEquals("https://ejemplo.com/per.jpg", pilotosCreados.get(1).getPictureUrl());
+        Assertions.assertEquals(201, response.getStatusCodeValue());
+        Assertions.assertEquals(2, pilotosCreados.size());
+        Assertions.assertEquals("Max", pilotosCreados.get(0).getName());
+        Assertions.assertEquals("Verstappen", pilotosCreados.get(0).getSurname());
+        Assertions.assertEquals("VER", pilotosCreados.get(0).getShortName());
+        Assertions.assertEquals("https://ejemplo.com/ver.jpg", pilotosCreados.get(0).getPictureUrl());
+        Assertions.assertEquals("Sergio", pilotosCreados.get(1).getName());
+        Assertions.assertEquals("Perez", pilotosCreados.get(1).getSurname());
+        Assertions.assertEquals("PER", pilotosCreados.get(1).getShortName());
+        Assertions.assertEquals("https://ejemplo.com/per.jpg", pilotosCreados.get(1).getPictureUrl());
         verify(crearPilotoController, times(2)).crearPiloto(any(PilotoDto.class));
     }
+
     @Test
     void crearPilotoPorApi_errorAlCrear_exception() {
         CrearPilotoApiController spyController = spy(crearPilotoApiController);
         doThrow(new RuntimeException("Error al obtener JSON")).when(spyController).getJson();
         RuntimeException exception = assertThrows(RuntimeException.class, () -> spyController.crearPorApi());
-        assertEquals("Error al obtener JSON", exception.getMessage());
+        Assertions.assertEquals("Error al obtener JSON", exception.getMessage());
     }
 }

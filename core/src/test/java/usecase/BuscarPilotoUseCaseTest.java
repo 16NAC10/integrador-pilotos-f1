@@ -80,7 +80,7 @@ public class BuscarPilotoUseCaseTest {
     }
 
     @Test
-    void buscarTodosLosPilotos_ListaVacia_LanzaExcepcion() {
+    void buscarTodosLosPilotos_pilotoNoExiste_Exception() {
         when(buscarPilotoRepository.buscarTodosLosPilotos()).thenThrow(PilotoInexistenteException.class);
         Assertions.assertThrows(PilotoInexistenteException.class, () -> buscarPilotoRepository.buscarTodosLosPilotos());
     }

@@ -18,15 +18,15 @@ public class CrearPilotoUseCase implements CrearPilotoInput {
 
     @Override
     public UUID crearPiloto(CrearPilotoRequestModel crearPilotoRequestModel) throws PilotoExisteException {
-        String fullName = NombreParser.parse(crearPilotoRequestModel.getFullName());
-        String shortName = crearPilotoRequestModel.getShortName().toUpperCase();
+        String fullName = crearPilotoRequestModel.getFullName() == null ? null : NombreParser.parse(crearPilotoRequestModel.getFullName());
+        String shortName = crearPilotoRequestModel.getShortName() == null ? null : crearPilotoRequestModel.getShortName().toUpperCase();
+        Piloto piloto = Piloto.factory(crearPilotoRequestModel.getId(), crearPilotoRequestModel.getName(), crearPilotoRequestModel.getSurname(), fullName, shortName, crearPilotoRequestModel.getPictureUrl());
         if(crearPilotoRepository.buscarPiloto(fullName)){
             throw new PilotoExisteException("El piloto " + fullName + " ya existe.");
         }
         if(crearPilotoRepository.buscarPilotoPorAbreviatura(shortName)){
             throw new PilotoExisteException("El piloto con abreviatura " + shortName + " ya existe.");
         }
-        Piloto piloto = Piloto.factory(crearPilotoRequestModel.getId(), crearPilotoRequestModel.getName(), crearPilotoRequestModel.getSurname(), fullName, shortName, crearPilotoRequestModel.getPictureUrl());
         return crearPilotoRepository.crearPiloto(piloto);
     }
 }

@@ -33,15 +33,26 @@ public class CrearPilotoUseCaseTest {
     @Test
     void crearPiloto_pilotoNoExiste_crearPiloto() {
         CrearPilotoRequestModel piloto = CrearPilotoRequestModel.factory(id, "Ignacio", "Páez", "Ignacio Páez", "PAE", "https://...");
-        when(crearPilotoRepository.buscarPiloto(piloto.getId())).thenReturn(false);
+        when(crearPilotoRepository.buscarPiloto(piloto.getFullName())).thenReturn(false);
+        when(crearPilotoRepository.buscarPilotoPorAbreviatura(piloto.getShortName())).thenReturn(false);
         when(crearPilotoRepository.crearPiloto(any(Piloto.class))).thenReturn(id);
         Assertions.assertEquals(id, crearPilotoInput.crearPiloto(piloto));
     }
 
     @Test
-    void crearPiloto_pilotoExiste_exception() {
+    void crearPiloto_pilotoExistePorNombre_exception() {
         CrearPilotoRequestModel piloto = CrearPilotoRequestModel.factory(id, "Ignacio", "Páez", "Ignacio Páez", "PAE", "https://...");
-        when(crearPilotoRepository.buscarPiloto(piloto.getId())).thenReturn(true);
+        when(crearPilotoRepository.buscarPiloto(piloto.getFullName())).thenReturn(true);
         Assertions.assertThrows(PilotoExisteException.class, () -> crearPilotoInput.crearPiloto(piloto));
     }
+
+    @Test
+    void crearPiloto_pilotoExistePorAbreviatura_exception() {
+        CrearPilotoRequestModel piloto = CrearPilotoRequestModel.factory(id, "Ignacio", "Páez", "Ignacio Páez", "PAE", "https://...");
+        when(crearPilotoRepository.buscarPiloto(piloto.getFullName())).thenReturn(false);
+        when(crearPilotoRepository.buscarPilotoPorAbreviatura(piloto.getShortName())).thenReturn(true);
+        Assertions.assertThrows(PilotoExisteException.class, () -> crearPilotoInput.crearPiloto(piloto));
+    }
+
+
 }

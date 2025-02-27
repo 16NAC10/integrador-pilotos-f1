@@ -16,7 +16,7 @@ public class Piloto {
     public Piloto() {}
 
     private Piloto(UUID id, String name, String surname, String fullName, String shortName, String pictureUrl) {
-        this.id = id;
+        this.id = id == null ? UUID.randomUUID() : id;
         this.name = name;
         this.surname = surname;
         this.fullName = fullName;

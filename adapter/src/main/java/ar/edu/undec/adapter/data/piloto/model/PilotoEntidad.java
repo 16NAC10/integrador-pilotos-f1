@@ -19,7 +19,7 @@ public class PilotoEntidad {
     public PilotoEntidad() {}
 
     public PilotoEntidad(UUID id, String name, String surname, String fullName, String shortName, String pictureUrl) {
-        this.id = id == null ? UUID.randomUUID() : id;
+        this.id = id;
         this.name = name;
         this.surname = surname;
         this.fullName = fullName;

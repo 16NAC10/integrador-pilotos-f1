@@ -4,6 +4,7 @@ import piloto.exception.PilotoExisteException;
 import piloto.input.CrearPilotoInput;
 import piloto.model.Piloto;
 import piloto.output.CrearPilotoRepository;
+import utils.NombreParser;
 
 import java.util.UUID;
 
@@ -17,10 +18,15 @@ public class CrearPilotoUseCase implements CrearPilotoInput {
 
     @Override
     public UUID crearPiloto(CrearPilotoRequestModel crearPilotoRequestModel) throws PilotoExisteException {
-        if(crearPilotoRepository.buscarPiloto(crearPilotoRequestModel.getId())){
-            throw new PilotoExisteException("El piloto ya existe.");
+        String fullName = NombreParser.parse(crearPilotoRequestModel.getFullName());
+        String shortName = crearPilotoRequestModel.getShortName().toUpperCase();
+        if(crearPilotoRepository.buscarPiloto(fullName)){
+            throw new PilotoExisteException("El piloto " + fullName + " ya existe.");
         }
-        Piloto piloto = Piloto.factory(crearPilotoRequestModel.getId(), crearPilotoRequestModel.getName(), crearPilotoRequestModel.getSurname(), crearPilotoRequestModel.getFullName(), crearPilotoRequestModel.getShortName(), crearPilotoRequestModel.getPictureUrl());
+        if(crearPilotoRepository.buscarPilotoPorAbreviatura(shortName)){
+            throw new PilotoExisteException("El piloto con abreviatura " + shortName + " ya existe.");
+        }
+        Piloto piloto = Piloto.factory(crearPilotoRequestModel.getId(), crearPilotoRequestModel.getName(), crearPilotoRequestModel.getSurname(), fullName, shortName, crearPilotoRequestModel.getPictureUrl());
         return crearPilotoRepository.crearPiloto(piloto);
     }
 }

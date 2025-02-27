@@ -1,5 +1,6 @@
 package ar.edu.undec.adapter.service.piloto.controller;
 
+import ar.edu.undec.adapter.service.piloto.dto.PilotoDto;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
@@ -8,14 +9,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import piloto.usecase.crearpilotousecase.CrearPilotoRequestModel;
+import utils.NombreParser;
 
 import javax.net.ssl.HttpsURLConnection;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Objects;
+
 
 @RestController
 @RequestMapping("apiPilotos")
@@ -33,26 +33,15 @@ public class CrearPilotoApiController {
         String json = getJson();
         JsonParser parser = new JsonParser();
         JsonArray jsonArray = parser.parse(json).getAsJsonArray();
-        ArrayList<CrearPilotoRequestModel> arrayPilotos = new ArrayList<>();
-        boolean repetido = false;
-
         for(JsonElement jsonElement : jsonArray){
             String fullName = jsonElement.getAsJsonObject().get("full_name").getAsString();
-            String name = jsonElement.getAsJsonObject().get("first_name").isJsonNull() ? fullName.split(" ")[0] : jsonElement.getAsJsonObject().get("first_name").getAsString();//
-            String surname = jsonElement.getAsJsonObject().get("last_name").isJsonNull() ? fullName.split(" ")[1] : jsonElement.getAsJsonObject().get("last_name").getAsString();//
+            fullName = NombreParser.parse(fullName);
+            String name = jsonElement.getAsJsonObject().get("first_name").isJsonNull() ? fullName.split(" ")[0] : jsonElement.getAsJsonObject().get("first_name").getAsString();
+            String surname = jsonElement.getAsJsonObject().get("last_name").isJsonNull() ? fullName.split(" ")[1] : jsonElement.getAsJsonObject().get("last_name").getAsString();
             String shortName = jsonElement.getAsJsonObject().get("name_acronym").getAsString();
             String pictureUrl = jsonElement.getAsJsonObject().get("headshot_url").isJsonNull() ? "Sin imagen" : jsonElement.getAsJsonObject().get("headshot_url").getAsString();
-            CrearPilotoRequestModel piloto = CrearPilotoRequestModel.factory(null, name, surname, fullName, shortName, pictureUrl);
-            for(CrearPilotoRequestModel p : arrayPilotos){
-                if(Objects.equals(piloto.getFullName(), p.getFullName())){
-                    repetido = true;
-                }
-            }
-            if(!repetido){
-                arrayPilotos.add(piloto);
-                crearPilotoController.crearPiloto(piloto);
-            }
-            repetido = false;
+            PilotoDto piloto = PilotoDto.factory(null, name, surname, fullName, shortName, pictureUrl);
+            crearPilotoController.crearPiloto(piloto);
         }
         return ResponseEntity.created(null).build();
     }
